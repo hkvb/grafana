@@ -1,0 +1,30 @@
+---
+version: '3'
+services:
+
+# START SERVICE hkvb/grafana/traefik
+  grafana:
+    image: ${VCW_REGISTRY}grafana/grafana:7.2.1
+    environment: ['GF_SERVER_SERVE_FROM_SUB_PATH=true', 'GF_SECURITY_ALLOW_EMBEDDING=true', 'GF_AUTH_ANONYMOUS_ENABLED=true', 'GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.', 'GF_AUTH_ANONYMOUS_ORG_ROLE=${GRAFANA_MODULE_GRAFANA_AUTH_ANONYMOUS_ORG_ROLE}', 'GF_LOG_MODE=console', 'GF_LOG_CONSOLE_FORMAT=text', 'GF_LOG_LEVEL=${GRAFANA_MODULE_GRAFANA_LOG_LEVEL}', 'GF_SERVER_ROOT_URL=/${VCW_STACK_GLOBAL_URLPREFIX}/grafana']
+    command: []
+    volumes: ['${VCW_STACK_GLOBAL_STACKPREFIX}_grafana_volume:/var/lib/grafana']
+    ports: []
+    networks: [${VCW_STACK_GLOBAL_NETWORKGLOBAL}_overlay, ${VCW_STACK_GLOBAL_NETWORKLOCAL}_overlay]
+    deploy:
+      mode: replicated
+      resources:
+        limits:
+          memory: '${GRAFANA_DEPLOY_RESOURCES_LIMITS_MEMORY}'
+        reservations:
+          memory: '${GRAFANA_DEPLOY_RESOURCES_RESERVATIONS_MEMORY}'
+
+      labels: [traefik.enable=true,traefik.docker.network=${VCW_STACK_GLOBAL_NETWORKGLOBAL}_overlay,
+      traefik.http.services.${VCW_STACK_GLOBAL_STACKPREFIX}_grafana.loadbalancer.server.port=3000,
+      traefik.http.routers.${VCW_STACK_GLOBAL_STACKPREFIX}_grafana.entrypoints=conteco,
+      traefik.http.routers.${VCW_STACK_GLOBAL_STACKPREFIX}_grafana.rule=PathPrefix("/${VCW_STACK_GLOBAL_URLPREFIX}/grafana")]
+${GRAFANA_COMPOSE_EXTENSIONS}
+# END SERVICE hkvb/grafana/traefik
+
+networks: {${VCW_STACK_GLOBAL_NETWORKGLOBAL}_overlay: { external: true }, ${VCW_STACK_GLOBAL_NETWORKLOCAL}_overlay: { external: true }}
+volumes: {${VCW_STACK_GLOBAL_STACKPREFIX}_grafana_volume: { external: true }}
+${VCW_STACK_GLOBAL_COMPOSE_EXTENSIONS}
