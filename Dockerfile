@@ -7,7 +7,7 @@ COPY ./ /vcw/repo/
 LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.label="hkvb/grafana Library" \
       co.vcweb.description="Grafana based image library for core vcwebco implementation." \
-      co.vcweb.realm="vcwc" \
+      co.vcweb.realm="hkvb" \
       co.vcweb.library="grafana" \
       co.vcweb.image="grafana" \
       co.vcweb.tag="${VCW_TAG}" \
