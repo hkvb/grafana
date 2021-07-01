@@ -1,3 +1,4 @@
+# architectures: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
 ARG  VCW_TAG=7.9.2
 ARG  VCW_TAG_BASH=5.0.18
 FROM ${VCW_REGISTRY}hkvb/bash.wrapper:${VCW_TAG_BASH}
