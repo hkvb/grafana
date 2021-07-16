@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+
+
+  ######################################################
+  # THIS FILE IS AUTO-GENERATED - PLEASE DO NOT CHANGE #
+  ######################################################
+
+#!/usr/bin/env bash
+
+executionplane --silent docker container prune --force
+continue="true"
+while [[ "true" == "$continue" ]] ;
+do
+	executionplane docker volume rm "hkvb_grafana__grafana_volume"
+	result=$(docker volume ls | grep "hkvb_grafana__grafana_volume")
+	if [[ "$result" == "" ]] ; then
+		continue="false"
+	else
+		sleep 3;
+	fi
+done;
+	
